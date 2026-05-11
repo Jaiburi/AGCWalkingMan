@@ -1,0 +1,182 @@
+DefVarsN3();
+DrawFrame(0.5,"axes");
+
+// Punto IPNS
+/*
+x = 3*e1+e2 - 2*e3;
+?P = x + 1/2*x^^2*einf + e0;
+?P2 = VecN3(3,1,-2); //Dos formas de hacer un punto
+
+:Magenta;
+:P;
+:P2;
+//*/
+
+// Esfera IPNS
+/*
+r=Slider("Radio",0,3,0.1,1);
+x=Slider("x",-3,3,0.1,1);
+y=Slider("y",-3,3,0.1,1);
+z=Slider("z",-3,3,0.1,1);
+P = VecN3(x,y,z);
+?S = P - 1/2*r^^2*einf;
+:IPNS;
+:S;
+//*/
+
+// Esfera OPNS
+/*
+x=Slider("x",-3,3,0.1,1);
+y=Slider("y",-3,3,0.1,1);
+z=Slider("z",-3,3,0.1,1);
+P1 = VecN3(x,y,z);
+P2 = VecN3(2,0,1);
+P3 = VecN3(1,0,2);
+P4 = e0;
+?Sd = P1^P2^P3^P4;
+:OPNS;
+:Color(1,0,1,0.4);
+:Sd;
+:Yellow;
+:P1; :P2; :P3; :P4;
+//*/
+
+// Plano IPNS
+/*
+d=Slider("distancia",0,3,0.1,1);
+x=Slider("x",-3,3,0.1,1);
+y=Slider("y",-3,3,0.1,1);
+z=Slider("z",-3,3,0.1,1);
+P = VecN3(x,y,z);
+?p1 = (x*e1+y*e2+z*e3)+d*einf;
+:IPNS;
+:Color(1,0,1,0.4)
+:p1;
+//*/
+
+// Plano OPNS
+/*
+x=Slider("x",-3,3,0.1,1);
+y=Slider("y",-3,3,0.1,1);
+z=Slider("z",-3,3,0.1,1);
+P1 = VecN3(x,y,z);
+P2 = VecN3(2,0,1);
+P3 = VecN3(1,0,2);
+P = VecN3(x,y,z);
+?p1 = P1^P2^P3^einf;
+:OPNS;
+:Color(1,0,1,0.4);
+:20*p1;
+:Yellow;
+:P1; :P2; :P3;
+//*/
+
+// Círculo IPNS
+/* 
+r=Slider("Radio",0,3,0.1,1);
+x=Slider("x",-3,3,0.1,1);
+y=Slider("y",-3,3,0.1,1);
+z=Slider("z",-3,3,0.1,1);
+P = VecN3(x,y,z);
+Pl = e1 + 0.75*einf;
+?S1 = P - 1/2*r^^2*einf;
+?S2 = e0 - 1/2*1^^2*einf;
+?Zs = S1^S2; //Como intersección de dos esferas
+?Zpl = S1^Pl; //Como intersección de esfera con plano
+:IPNS;
+:Zs; :Zpl;
+:Color(1,1,0,0.6);
+:S1; :S2; :20*Pl;
+//*/
+
+// Circulo OPNS
+/*
+x=Slider("x",-3,3,0.1,1);
+y=Slider("y",-3,3,0.1,1);
+z=Slider("z",-3,3,0.1,1);
+P1 = VecN3(x,y,z);
+P2 = VecN3(2,0,1);
+P3 = VecN3(1,0,2);
+P = VecN3(x,y,z);
+?Zd = P1^P2^P3;
+:OPNS;
+:Color(1,0,1,0.4);
+:20*Zd;
+:Yellow;
+:P1; :P2; :P3;
+//*/
+
+// Linea IPNS
+/* 
+d=Slider("Radio",0,3,0.1,1); //Distancia más corta del plano al origen
+x=Slider("x",-3,3,0.1,1);
+y=Slider("y",-3,3,0.1,1);
+z=Slider("z",-3,3,0.1,1);
+P = VecN3(x,y,z);
+pl1 = e1 + 0.75*einf;
+pl2 = x*e1+y*e2+z*e3+d*einf;
+?L = pl1^pl2;
+
+:IPNS;
+:Color(1,0,1);
+:L;
+:Color(1,1,0,0.6);
+:pl1; :pl2;
+//*/
+
+// Linea OPNS
+/*
+x=Slider("x",-3,3,0.1,1);
+y=Slider("y",-3,3,0.1,1);
+z=Slider("z",-3,3,0.1,1);
+P1 = VecN3(x,y,z);
+P2 = VecN3(2,0,1);
+P = VecN3(x,y,z);
+?Ld = P1^P2^einf;
+:OPNS;
+:Color(1,0,1,0.4);
+:Ld;
+:Yellow;
+:P1; :P2;
+//*/
+
+// Par de Puntos IPNS
+/* 
+r=Slider("Radio",0,3,0.1,1);
+x=Slider("x",-3,3,0.1,1);
+y=Slider("y",-3,3,0.1,1);
+z=Slider("z",-3,3,0.1,1);
+P = VecN3(x,y,z);
+?S1 = P - 1/2*r^^2*einf;
+?S2 = e0 - 1/2*1^^2*einf;
+?S3 = VecN3(0.5,0,0) - 1/2*1^^2*einf;
+?Z1 = S1^S2;
+?Z2 = S1^S3;
+?Z3 = S2^S3;
+?Pps = S1^S2^S3; //Pp intersección de tres esferas
+?Ppc = S1^Z3; //Pp como interseccón de esfera con un circulo
+:IPNS;
+:Z1; :Z2;
+:Color(0,0.8,0.5);
+:Z3;
+:Color(1,1,0,0.6);
+:S1; :S2; :S3;
+:Color(0,1,1);
+:Pps; :Ppc;
+//*/
+
+// Par de Puntos OPNS
+/*
+x=Slider("x",-3,3,0.1,1);
+y=Slider("y",-3,3,0.1,1);
+z=Slider("z",-3,3,0.1,1);
+P1 = VecN3(x,y,z);
+P2 = VecN3(2,0,1);
+?Pp = P1^P2;
+
+:OPNS;
+:Color(1,0,1,0.4);
+:Pp;
+:Yellow;
+:P1; :P2;
+//*/

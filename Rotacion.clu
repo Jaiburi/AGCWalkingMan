@@ -1,0 +1,78 @@
+DefVarsN3();
+DrawFrame(0.5,"axes");
+
+//TRANSFORMACIONES
+
+// Rotación Rotor R
+/*
+:IPNS;
+O = VecN3(1,0,0) - 1/2*(0.5)^^2*einf; //Objeto a rotar (esfera)
+O = (e0^VecN3(1,0,0)^VecN3(0,1,0))*; //Objeto a rotar (circulo)
+
+th = Slider("Ángulo",0, 2*Pi, 0.05,0); //Angulo de rotación
+v = e1 - e3; //Eje de rotación (vector)
+B = -v*(e1*e2*e3)/abs(v); //Bivector (eje de rotación)
+?R = cos(th/2) + sin(th/2)*B; //Rotor
+:R = RotorN3(v,th); //Rotor con función
+?Op = R*O*(~R); //Objeto a rotar
+
+:White;
+:O;
+:Cyan;
+:Op;
+//*/
+
+// Traslación
+/*
+:IPNS;
+O = VecN3(1,0,0) - 1/2*(0.5)^^2*einf; //Objeto a trasladar (esfera)
+O = e1 + 2*e2 + 3*e3 + einf; //Objeto a trasladar (plano)
+
+x=Slider("x",-5,5,0.1,0);
+y=Slider("y",-5,5,0.1,0);
+z=Slider("z",-5,5,0.1,0);
+
+?t = x*e1 + y*e2 + z*e3;
+?T = 1 - 1/2*t*einf;
+?T = TranslatorN3(x,y,z); //Traslador como función
+//También se puede TranslatorN3(t)
+?Op = T*O*(~T); //Objeto a rotar
+
+:White;
+:O;
+:Cyan;
+:Op;
+//*/
+
+// Motor (Trasladar y luego rotar)
+// Ejemplo: péndulo simple
+//*
+:IPNS;
+O = e0; //Centro de esfera (Masa del pendulo)
+L = 1; //Longitud del péndulo
+//th = Slider("Ángulo",0,2*Pi),0.05,0);
+check = CheckBox("Animación", false);
+EnableAnimate(check);
+?t = Time%20;
+?th = Pi/2*cos(3*t)*exp(-0.2*t);
+//Angulo oscilante y decreciente del pendulo
+
+R = RotorN3(0,0,1,th);
+T = TranslatorN3(0,-L,0);
+M = R*T;
+Op = M*O*(~M);
+
+:White;
+:Op-1/2*(0.3)^^2*einf;
+:Yellow;
+DrawCylinder(O,Op,0.05); //Dibuja cilindro
+//:DrawCylinder(Punto inicial del clilindro, Op, 0.05)
+
+
+
+
+
+
+
+
+

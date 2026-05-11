@@ -1,0 +1,71 @@
+DefVarsN3();
+DrawFrame(0.5,"axes");
+// //#include"libreria.clu" //Para agregar librería con funciones
+
+//Leer Archivo
+/*
+Data = ReadData("Datos.txt");
+?Data;
+?Data(2);
+?Data(2,3);
+?Data(2)(3);
+//*/
+
+//*
+//Función de cilindro "modificada"
+Cilindro = {
+	A = _P(1); //Inicial
+	B = _P(2); //Final
+	r = _P(3); //Radio
+
+	E = einf^e0;   //Plano de Minkowski
+	Ae = (A^E)*E; // Quitar parte conformal del punto A
+	Be = (B^E)*E; //QUitar parte conformal del punto B
+	Ce = Be - Ae; //Vector de direccion euclidiano de A a B
+	C = Ce + 1/2*Ce^^2*einf + e0; //Vector C en conformal
+	DrawCylinder(A, C, r); 
+	[C, Ce, "Hola"] //Salida(s)
+}
+
+//Ejemplo: péndulo doble
+:IPNS;
+EnableAnimate(CheckBox("Animar",0));
+if(ExecMode & !EM_ANIMATE)
+{
+	Data = ReadData("doble_pendulo.txt");
+	?N = Size(Data);
+}
+
+//Numero de elementos de la lista
+?i = round(Time*200,0)%N + 1; 
+th1 = Data(i,1)+Pi/2; 
+th2 = Data(i,2);
+
+O = e0; //Punto incial (Origen)
+L1 = 1; // Longitud primer angulo
+//Los sliders es por si se quiere hacer manual
+//th1 = Slider("Angulo 1", -Pi, Pi, 0.1, 0); //Angulo de rotacion 1
+
+L2 = 1.2;
+//th2 = Slider("Angulo 2", -Pi, Pi, 0.1, 0); //Angulo de rotacion 2
+
+R1 = RotorN3(0,0,1,th1);
+T1 = TranslatorN3(0,-L1,0);
+M1 = R1*T1; //Primer motor;
+M = M1; //motor auxiliar
+P1 = M*O*(~M);
+
+R2 = RotorN3(0,0,1,th2);
+T2 = TranslatorN3(0,-L2,0);
+M2 = R2*T2; //Primer motor;
+M = M*M2; //motor auxiliar
+P2 = M*O*(~M);
+
+:White;
+:P1 - 1/2*(0.15)^^2*einf;
+:P2 - 1/2*(0.15)^^2*einf;
+:Yellow;
+?G = ::Cilindro(O,P1,0.05);
+::Cilindro(P1,P2,0.05);
+?G(1);
+
