@@ -2,6 +2,8 @@ DefVarsN3();
 DrawFrame(0.5,"axes");
 // //#include"libreria.clu" //Para agregar librería con funciones
 
+_BGColor = White;
+
 //Leer Archivo
 /*
 Data = ReadData("Datos.txt");
