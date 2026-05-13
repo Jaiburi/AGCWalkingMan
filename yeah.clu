@@ -1,6 +1,8 @@
 DefVarsN3();
 DrawFrame(0.5, "axes");
 
+_BGColor = Color(0.37, 0.68, 0.98);
+
 // --- MACROS ---
 Cilindro = {
 	A = _P(1); B = _P(2); r = _P(3);
@@ -14,6 +16,22 @@ Cilindro = {
 Esfera = {
 	P = _P(1); r = _P(2);
 	:P - 0.5*(r^^2)*einf;
+}
+
+Box = {
+	C = _P(1);
+	X = _P(2);
+	Y = _P(3);
+	Z = _P(4);
+	
+	E = einf^e0;
+	D1e = ((X-C)^E)*E;
+	D2e = ((Y-C)^E)*E;
+	D3e = ((Z-C)^E)*E;
+	D1 = D1e + 1/2*D1e^^2*einf + e0;
+	D2 = D2e + 1/2*D2e^^2*einf + e0;
+	D3 = D3e + 1/2*D3e^^2*einf + e0;
+	DrawBox(C, D1, D2, D3);
 }
 
 :IPNS;
@@ -128,6 +146,15 @@ P_LLJ = M_LLJ * e0 * (~M_LLJ); // Punto Lumbar
 M_LNJ = M_LLJ * TranslatorN3(0, L_Torso, 0) * RotorN3(1,0,0,LNJxr) * RotorN3(0,1,0,LNJyr);
 P_LNJ = M_LNJ * e0 * (~M_LNJ); // Punto Cuello
 
+// 2.5 CABEZA
+M_Head = M_LNJ * TranslatorN3(0, 0.90, 0);
+P_Head = M_Head * e0 * (~M_Head);
+
+M_OjoL = M_Head * TranslatorN3( 0.30, 0.10, 0.75);
+M_OjoR = M_Head * TranslatorN3(-0.30, 0.10, 0.75);
+P_OjoL = M_OjoL * e0 * (~M_OjoL);
+P_OjoR = M_OjoR * e0 * (~M_OjoR);
+
 // 3. BRAZO IZQUIERDO (L)
 M_SJL = M_LNJ * TranslatorN3(L_Clav, 0, 0) * RotorN3(1,0,0,SJLxr) * RotorN3(0,1,0,SJLyr) * RotorN3(0,0,1,SJLzr);
 P_SJL = M_SJL * e0 * (~M_SJL);
@@ -135,12 +162,24 @@ M_EJL = M_SJL * TranslatorN3(0, -L_Hum, 0) * RotorN3(1,0,0,EJLxr);
 P_EJL = M_EJL * e0 * (~M_EJL);
 P_HandL = (M_EJL * TranslatorN3(0, -L_Rad, 0)) * e0 * (~M_EJL);
 
+M_HandL = M_EJL * TranslatorN3(0, -0.6*L_Rad, 0);
+P_HandL_C  = M_HandL * e0 * (~M_HandL);
+P_HandL_X  = (M_HandL * TranslatorN3(0.28, 0, 0))    * e0 * (~M_HandL);
+P_HandL_Y  = (M_HandL * TranslatorN3(0, -1.60, 0))   * e0 * (~M_HandL);
+P_HandL_Z  = (M_HandL * TranslatorN3(0, 0, 0.75))    * e0 * (~M_HandL);
+
 // 4. BRAZO DERECHO (R)
 M_SJR = M_LNJ * TranslatorN3(-L_Clav, 0, 0) * RotorN3(1,0,0,SJRxr) * RotorN3(0,1,0,SJRyr) * RotorN3(0,0,1,SJRzr);
 P_SJR = M_SJR * e0 * (~M_SJR);
 M_EJR = M_SJR * TranslatorN3(0, -L_Hum, 0) * RotorN3(1,0,0,EJRxr);
 P_EJR = M_EJR * e0 * (~M_EJR);
 P_HandR = (M_EJR * TranslatorN3(0, -L_Rad, 0)) * e0 * (~M_EJR);
+
+M_HandR = M_EJR * TranslatorN3(0, -0.6*L_Rad, 0);
+P_HandR_C  = M_HandR * e0 * (~M_HandR);
+P_HandR_X  = (M_HandR * TranslatorN3(0.28, 0, 0))    * e0 * (~M_HandR);
+P_HandR_Y  = (M_HandR * TranslatorN3(0, -1.60, 0))   * e0 * (~M_HandR);
+P_HandR_Z  = (M_HandR * TranslatorN3(0, 0, 0.75))    * e0 * (~M_HandR);
 
 // 5. PIERNA IZQUIERDA (L)
 M_HJL = M_Root * TranslatorN3(L_Pelv, 0, 0) * RotorN3(1,0,0,HJLxr) * RotorN3(0,1,0,HJLyr) * RotorN3(0,0,1,HJLzr);
@@ -150,6 +189,13 @@ P_KJL = M_KJL * e0 * (~M_KJL);
 M_AJL = M_KJL * TranslatorN3(0, -L_Tib, 0) * RotorN3(1,0,0,AJLxr) * RotorN3(0,1,0,AJLyr) * RotorN3(0,0,1,AJLzr);
 P_AJL = M_AJL * e0 * (~M_AJL);
 
+// --- PIE IZQUIERDO ---
+M_FootL = M_AJL * TranslatorN3(0, -L_Pie/2, L_Pie/2);
+P_FootL_C = M_FootL * e0 * (~M_FootL);
+P_FootL_X = (M_FootL * TranslatorN3(0.50, 0, 0))   * e0 * (~M_FootL);  // Ancho pie
+P_FootL_Y = (M_FootL * TranslatorN3(0, -0.50, 0))  * e0 * (~M_FootL);  // Alto pie
+P_FootL_Z = (M_FootL * TranslatorN3(0, 0, 1.60))   * e0 * (~M_FootL);  // Largo pie
+
 // 6. PIERNA DERECHA (R)
 M_HJR = M_Root * TranslatorN3(-L_Pelv, 0, 0) * RotorN3(1,0,0,HJRxr) * RotorN3(0,1,0,HJRyr) * RotorN3(0,0,1,HJRzr);
 P_HJR = M_HJR * e0 * (~M_HJR);
@@ -157,6 +203,20 @@ M_KJR = M_HJR * TranslatorN3(0, -L_Fem, 0) * RotorN3(1,0,0,KJRxr);
 P_KJR = M_KJR * e0 * (~M_KJR);
 M_AJR = M_KJR * TranslatorN3(0, -L_Tib, 0) * RotorN3(1,0,0,AJRxr) * RotorN3(0,1,0,AJRyr) * RotorN3(0,0,1,AJRzr);
 P_AJR = M_AJR * e0 * (~M_AJR);
+
+// --- PIE DERECHO ---
+M_FootR = M_AJR * TranslatorN3(0, -L_Pie/2, L_Pie/2);
+P_FootR_C = M_FootR * e0 * (~M_FootR);
+P_FootR_X = (M_FootR * TranslatorN3(0.50, 0, 0))   * e0 * (~M_FootR);
+P_FootR_Y = (M_FootR * TranslatorN3(0, -0.50, 0))  * e0 * (~M_FootR);
+P_FootR_Z = (M_FootR * TranslatorN3(0, 0, 1.60))   * e0 * (~M_FootR);
+
+// --- SUELO ---
+// Nivel de pies: P_Root esta en y=0, los pies bajan L_Fem + L_Tib + L_Pie = 8.09
+Y_Suelo = (L_Fem + L_Tib + L_Pie);  // = -8.09
+Suelo = e2 - Y_Suelo * einf;          // Plano IPNS: normal +Y a altura Y_Suelo
+:Color(0.40, 0.75, 0.35, 0.55);
+:1000*Suelo;
 
 // --- DIBUJO ---
 :Red; 
@@ -167,6 +227,10 @@ P_AJR = M_AJR * e0 * (~M_AJR);
 ::Esfera(P_HJL, 0.12); ::Esfera(P_KJL, 0.1);  ::Esfera(P_AJL, 0.08);
 ::Esfera(P_HJR, 0.12); ::Esfera(P_KJR, 0.1);  ::Esfera(P_AJR, 0.08);
 
+:Color(0.2, 0.3, 0.65, 1.0);  // Azul para los ojos
+::Esfera(P_OjoL, 0.22);
+::Esfera(P_OjoR, 0.22);
+
 :White;
 // Conexiones (Huesos)
 ::Cilindro(P_LLJ, P_LNJ, 0.05); // Torso
@@ -174,3 +238,11 @@ P_AJR = M_AJR * e0 * (~M_AJR);
 ::Cilindro(P_LNJ, P_SJR, 0.04); ::Cilindro(P_SJR, P_EJR, 0.04); ::Cilindro(P_EJR, P_HandR, 0.03); // Brazo R
 ::Cilindro(P_Root, P_HJL, 0.05); ::Cilindro(P_HJL, P_KJL, 0.05); ::Cilindro(P_KJL, P_AJL, 0.04); // Pierna L
 ::Cilindro(P_Root, P_HJR, 0.05); ::Cilindro(P_HJR, P_KJR, 0.05); ::Cilindro(P_KJR, P_AJR, 0.04); // Pierna R
+
+::Esfera(P_Head, 0.90); //Cabeza
+
+::Box(P_HandL_C, P_HandL_X, P_HandL_Y, P_HandL_Z); //Manos
+::Box(P_HandR_C, P_HandR_X, P_HandR_Y, P_HandR_Z);
+
+::Box(P_FootL_C, P_FootL_X, P_FootL_Y, P_FootL_Z); // Pie L
+::Box(P_FootR_C, P_FootR_X, P_FootR_Y, P_FootR_Z); // Pie R
