@@ -46,7 +46,7 @@ Manual = CheckBox("Manual", 1);
 EnableAnimate(CheckBox("Animar", 0));
 
 // Cámara (Base del mundo)
-M = TranslatorN3(Slider("Cam X",-10,10,1,0), Slider("Cam Y",-10,10,1,0), Slider("Cam Z",-10,10,1,0));
+M = TranslatorN3(Slider("Cam X",-10,10,1,-3), Slider("Cam Y",-10,10,1,-4), Slider("Cam Z",-20,0,1,-16));
 
 // --- INICIALIZACIÓN 32 DOF ---
 BFx=0; BFy=0; BFz=0; BFxr=0; BFyr=0; BFzr=0; LLJxr=0; LLJzr=0; LNJxr=0; LNJyr=0; 
@@ -213,9 +213,9 @@ P_FootR_Z = (M_FootR * TranslatorN3(0, 0, 1.60))   * e0 * (~M_FootR);
 
 // --- SUELO ---
 // Nivel de pies: P_Root esta en y=0, los pies bajan L_Fem + L_Tib + L_Pie = 8.09
-Y_Suelo = (L_Fem + L_Tib + L_Pie);  // = -8.09
+Y_Suelo = 12; //(L_Fem + L_Tib + L_Pie);  // = -8.09
 Suelo = e2 - Y_Suelo * einf;          // Plano IPNS: normal +Y a altura Y_Suelo
-:Color(0.40, 0.75, 0.35, 0.55);
+:Color(0.40, 0.75, 0.35, 0.8);
 :1000*Suelo;
 
 // --- DIBUJO ---
