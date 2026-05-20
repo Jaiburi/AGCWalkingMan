@@ -4,7 +4,7 @@ DrawFrame(0.5,"axes");
 //TRANSFORMACIONES
 
 // Rotación Rotor R
-/*
+//*
 :IPNS;
 O = VecN3(1,0,0) - 1/2*(0.5)^^2*einf; //Objeto a rotar (esfera)
 O = (e0^VecN3(1,0,0)^VecN3(0,1,0))*; //Objeto a rotar (circulo)
